@@ -164,7 +164,7 @@ public class Main {
                     store.filterLaptops();
                     break;
                 case 0:
-                    System.out.println("До свидания!");
+                    System.out.println("До свидания! Программа подготовлена студентом GB Павел О. Преподаватель Вороновский Роман.");
                     break;
                 default:
                     System.out.println("Неверный выбор. Попробуйте снова.");
