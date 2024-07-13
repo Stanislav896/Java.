@@ -39,13 +39,38 @@ class Laptop {
 
 class LaptopStore {
     private Set<Laptop> laptops;
+    private Random random;
 
     public LaptopStore() {
         laptops = new HashSet<>();
+        random = new Random();
     }
 
-    public void addLaptop(Laptop laptop) {
-        laptops.add(laptop);
+    public void generateLaptops(int count) {
+        String[] models = {"Dell", "HP", "Lenovo", "Asus", "Acer", "Apple", "MSI", "Huawei"};
+        int[] ramOptions = {4, 8, 16, 32, 64};
+        int[] hddOptions = {256, 512, 1024, 2048};
+        String[] osOptions = {"Windows", "MacOS", "Linux"};
+        String[] colorOptions = {"Black", "Silver", "White", "Blue", "Red"};
+
+        for (int i = 0; i < count; i++) {
+            String model = models[random.nextInt(models.length)] + "-" + (i + 1);
+            int ram = ramOptions[random.nextInt(ramOptions.length)];
+            int hddCapacity = hddOptions[random.nextInt(hddOptions.length)];
+            String os = osOptions[random.nextInt(osOptions.length)];
+            String color = colorOptions[random.nextInt(colorOptions.length)];
+            double price = 500 + random.nextDouble() * 2500; // Цена от 500 до 3000
+
+            laptops.add(new Laptop(model, ram, hddCapacity, os, color, Math.round(price * 100.0) / 100.0));
+        }
+        
+    }
+    public void displayAllLaptops() {
+        System.out.println("Все доступные ноутбуки:");
+        for (Laptop laptop : laptops) {
+            System.out.println(laptop);
+        }
+        System.out.println("Всего ноутбуков: " + laptops.size());
     }
 
     public void filterLaptops() {
@@ -117,12 +142,36 @@ class LaptopStore {
 public class Main {
     public static void main(String[] args) {
         LaptopStore store = new LaptopStore();
+        store.generateLaptops(100);
 
-        store.addLaptop(new Laptop("Model1", 8, 512, "Windows", "Black", 999.99));
-        store.addLaptop(new Laptop("Model2", 16, 1024, "MacOS", "Silver", 1499.99));
-        store.addLaptop(new Laptop("Model3", 4, 256, "Linux", "Red", 599.99));
-        store.addLaptop(new Laptop("Model4", 32, 2048, "Windows", "White", 1999.99));
+        Scanner scanner = new Scanner(System.in);
+        int choice;
 
-        store.filterLaptops();
+        do {
+            System.out.println("\n===== Магазин ноутбуков =====");
+            System.out.println("1. Показать все ноутбуки");
+            System.out.println("2. Отфильтровать ноутбуки");
+            System.out.println("0. Выйти");
+            System.out.print("Выберите действие: ");
+
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    store.displayAllLaptops();
+                    break;
+                case 2:
+                    store.filterLaptops();
+                    break;
+                case 0:
+                    System.out.println("До свидания!");
+                    break;
+                default:
+                    System.out.println("Неверный выбор. Попробуйте снова.");
+            }
+
+        } while (choice != 0);
+
+        scanner.close();
     }
 }
